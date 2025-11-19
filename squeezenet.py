@@ -8,7 +8,7 @@ from torch.optim import AdamW
 from tqdm import tqdm
 
 
-device = torch.device("cpu")
+device = torch.device("cuda")
 
 class Fire(nn.Module):
 	def __init__(self, in_channels, squeeze_channels, expand_channels):
