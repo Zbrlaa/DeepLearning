@@ -64,11 +64,6 @@ criterion = nn.CrossEntropyLoss()
 
 num_epochs = 10
 
-train_losses = []
-val_losses = []
-train_accs = []
-val_accs = []
-
 
 #train
 for epoch in range(num_epochs):
@@ -116,29 +111,3 @@ for epoch in range(num_epochs):
 	print(f"  Train     - acc={train_acc:.4f} loss={train_loss:.4f}")
 	print(f"  Val       - acc={val_acc:.4f}   loss={val_loss:.4f}")
 	print("-----------------------------------------------------")
-
-	train_losses.append(train_loss)
-	val_losses.append(val_loss)
-	train_accs.append(train_acc)
-	val_accs.append(val_acc)
-
-
-plt.figure(figsize=(10,5))
-plt.plot(train_losses, label="Train Loss")
-plt.plot(val_losses, label="Validation Loss")
-plt.title("Loss par epoch")
-plt.xlabel("Epoch")
-plt.ylabel("Loss")
-plt.legend()
-plt.grid()
-plt.show()
-
-plt.figure(figsize=(10,5))
-plt.plot(train_accs, label="Train Accuracy")
-plt.plot(val_accs, label="Validation Accuracy")
-plt.title("Accuracy par epoch")
-plt.xlabel("Epoch")
-plt.ylabel("Accuracy")
-plt.legend()
-plt.grid()
-plt.show()
