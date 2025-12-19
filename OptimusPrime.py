@@ -101,17 +101,38 @@ class OptimusPrime(nn.Module):
 		x = self.final_rms(x)
 		return self.output_layer(x)
 
+	# @torch.no_grad()
+	# def generate(self, idx, max_new_tokens, temperature=1.0):
+	# 	# Pour prédire la suite d'une image au test set
+	# 	for _ in range(max_new_tokens):
+	# 		idx_cond = idx[:, -self.max_len:]
+	# 		logits = self(idx_cond)
+	# 		logits = logits[:, -1, :] / temperature
+	# 		probs = F.softmax(logits, dim=-1)
+	# 		idx_next = torch.multinomial(probs, num_samples=1)
+	# 		idx = torch.cat((idx, idx_next), dim=1)
+	# 		if idx.shape[1] >= self.max_len: break
+	# 	return idx
+
 	@torch.no_grad()
-	def generate(self, idx, max_new_tokens, temperature=1.0):
-		# Pour prédire la suite d'une image au test set
+	def generate(self, idx, max_new_tokens, temperature=1.0, mode='greedy'):
 		for _ in range(max_new_tokens):
 			idx_cond = idx[:, -self.max_len:]
 			logits = self(idx_cond)
-			logits = logits[:, -1, :] / temperature
-			probs = F.softmax(logits, dim=-1)
-			idx_next = torch.multinomial(probs, num_samples=1)
+			logits = logits[:, -1, :] # On prend le dernier token
+			
+			if mode == 'greedy':
+				# On prend le token le plus probable (Vraisemblance max)
+				idx_next = torch.argmax(logits, dim=-1, keepdim=True)
+			else:
+				# Mode sampling original
+				logits = logits / temperature
+				probs = F.softmax(logits, dim=-1)
+				idx_next = torch.multinomial(probs, num_samples=1)
+				
 			idx = torch.cat((idx, idx_next), dim=1)
-			if idx.shape[1] >= self.max_len: break
+			if idx.shape[1] >= self.max_len:
+				break
 		return idx
 
 

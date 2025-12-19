@@ -56,7 +56,7 @@ def run_test_submission(model_path, test_file="dataset-test.txt"):
 			with torch.no_grad():
 				# On utilise ta fonction generate avec une température de 0.8
 				# 0.8 est un bon compromis pour la cohérence visuelle
-				generated_seq = model.generate(x, max_new_tokens=tokens_to_generate, temperature=0.8)
+				generated_seq = model.generate(x, max_new_tokens=tokens_to_generate, temperature=0.8) #Baisser pour prochain
 				final_tokens = generated_seq[0].tolist()
 		else:
 			final_tokens = prefix_tokens[:max_len]
